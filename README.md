@@ -41,17 +41,17 @@ A fictional company with 5 departments needs a secured Windows Active Directory 
 | Server | Role | IP |
 |---|---|---|
 | **DC01** | Primary Domain Controller, DNS | `10.7.10.11` |
-| **DC02** | *(status: TBC — see [Open questions](#open-questions))* | — |
+| **DC02** | *Dropped: teacher approved skipping DC02 for a two-person team — see [Open questions](#open-questions)* | — |
 | **FILSRV01** | File server — one share per department | `10.7.10.20` |
 | **CA01** | Enterprise Root CA — certs for machines/users/LDAPS | `10.7.10.30` |
-| **RADIUS01** | NPS/RADIUS — 802.1X WiFi auth | `10.7.10.x` (TBD) |
+| **RADIUS01** | NPS/RADIUS — 802.1X WiFi auth | `10.7.10.40` |
 
 ### Network
 
 | VLAN | Purpose | Subnet |
 |---|---|---|
 | 1070 | Servers | `10.7.10.0/24` |
-| 1071 | Client workstations | `10.7.10.0/24` *(adjust if split further)* |
+| 1071 | Client workstations | `10.7.20.0/24` |
 | 1072 | WiFi (802.1X) | `10.7.30.0/24` |
 
 - Full allocated range: **VLAN 1070–1079, `10.7.0.0/16`**
@@ -92,7 +92,6 @@ Reviews/retrospectives: 11, 18, 25 Nov.
 - [ ] Configure VLANs on switch + Fortigate interfaces
 - [ ] Fortigate firewall rules + client DHCP
 - [ ] DC01 — static IP, VMware Tools, `g7future.local` domain
-- [ ] *(DC02 — pending team decision)*
 - [ ] OUs + one user per department + global groups
 - [ ] Join a Windows client to the domain
 - [ ] FILSRV01 — built, static IP, extra disk, VMware Tools, snapshot
@@ -120,7 +119,7 @@ Reviews/retrospectives: 11, 18, 25 Nov.
 
 ## Open questions
 
-- **DC02**: the teacher approved a reduced scope (skip DC02) for a 2-person team. Team size may now be 2 or 3 — confirm whether DC02 (and redundancy testing) is in scope before Sprint 1 ends.
+- **DC02**: dropped. The teacher approved skipping DC02 for a two-person team, so the project has one domain controller. This must be confirmed again if the team becomes three.
 - Third team member — to be confirmed.
 - UniFi access for WiFi AP configuration — to be requested from teacher.
 - Whether the 30GB/VM disk guidance applies if a Windows 11 client (needs more) is added.
