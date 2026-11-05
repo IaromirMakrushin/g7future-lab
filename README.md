@@ -4,6 +4,12 @@ A secured company network built from scratch in a virtual lab, as part of the *A
 
 **Presentation:** 26 Nov 2026 · **Exam:** 27 Nov 2026
 
+## Repo structure
+
+- [`docs/jira-tickets.md`](docs/jira-tickets.md) — full backlog as Jira-ready ticket text
+- `evidence/sprint1/`, `evidence/sprint2/`, `evidence/sprint3/` — screenshots and command output proving each requirement, organized by sprint
+- `scripts/` — PowerShell/config snippets used during the build
+
 > This repo documents the design, build steps, and evidence for the project. It intentionally contains **no credentials, IP-reachable login pages, or anything that could be used to access the live lab** — see [Security notes](#security-notes).
 
 ---

@@ -1,0 +1,9 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Never commit credentials or secrets
+*.secrets
+*.env
+*password*
+*credentials*
