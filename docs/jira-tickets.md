@@ -2,6 +2,8 @@
 
 Network: VLAN 1070–1079, 10.7.0.0/16, domain `g7future.local`. Scope reduced: no DC02.
 
+**Correction (10 Nov 2026):** actual built servers/clients use `10.7.1.0/24` (gateway `10.7.1.1`), not `10.7.10.0/24` as originally planned — see README for details.
+
 Paste each section below as one Jira issue (title = heading, description = bullet list). Suggested labels: `network`, `ad`, `fileserver`, `ca`, `radius`, `hardening`, `docs`.
 
 ---

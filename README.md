@@ -40,19 +40,31 @@ A fictional company with 5 departments needs a secured Windows Active Directory 
 
 | Server | Role | IP |
 |---|---|---|
-| **DC01** | Primary Domain Controller, DNS | `10.7.10.11` |
+| **DC01** | Primary Domain Controller, DNS | `10.7.1.2` |
 | **DC02** | *Dropped: teacher approved skipping DC02 for a two-person team — see [Open questions](#open-questions)* | — |
-| **FILSRV01** | File server — one share per department | `10.7.10.20` |
-| **CA01** | Enterprise Root CA — certs for machines/users/LDAPS | `10.7.10.30` |
-| **RADIUS01** | NPS/RADIUS — 802.1X WiFi auth | `10.7.10.40` |
+| **FILSRV01** | File server — one share per department | `10.7.1.3` |
+| **CA01** | Enterprise Root CA — certs for machines/users/LDAPS | `10.7.1.4` |
+| **RADIUS01** | NPS/RADIUS — 802.1X WiFi auth | TBD (not built yet) |
+| **CLIENT01** | Test client proving domain login (Sprint 1) | `10.7.1.10` |
 
 ### Network
+
+| VLAN | Purpose | Subnet |
+|---|---|---|
+| 1070 | Servers + clients (actual, per Fortigate config) | `10.7.1.0/24` |
+
+> **Correction (10 Nov 2026):** the original plan below called for separate `10.7.10.0/24` (servers) / `10.7.20.0/24` (clients) / `10.7.30.0/24` (WiFi) subnets. Elis found the real Fortigate interface config uses gateway `10.7.1.1` on a single `10.7.1.0/24` subnet, not `10.7.10.x`. All built machines (DC01, FILSRV01, CA01, CLIENT01) were re-IP'd to `10.7.1.0/24` to match. The planned per-purpose VLAN split (1070/1071/1072) below is the *original design intent* and may still apply once WiFi/RADIUS (VLAN 1072) is built — treat the table above as what's actually running today.
+
+<details>
+<summary>Original planned VLAN split (superseded for servers/clients, kept for reference)</summary>
 
 | VLAN | Purpose | Subnet |
 |---|---|---|
 | 1070 | Servers | `10.7.10.0/24` |
 | 1071 | Client workstations | `10.7.20.0/24` |
 | 1072 | WiFi (802.1X) | `10.7.30.0/24` |
+
+</details>
 
 - Full allocated range: **VLAN 1070–1079, `10.7.0.0/16`**
 - Domain: **`g7future.local`**
@@ -88,15 +100,15 @@ Reviews/retrospectives: 11, 18, 25 Nov.
 ## Backlog
 
 ### Sprint 1
-- [ ] Create Jira board + backlog
+- [x] Create Jira board + backlog
 - [ ] Configure VLANs on switch + Fortigate interfaces
 - [ ] Fortigate firewall rules + client DHCP
-- [ ] DC01 — static IP, VMware Tools, `g7future.local` domain
-- [ ] OUs + one user per department + global groups
-- [ ] Join a Windows client to the domain
-- [ ] FILSRV01 — built, static IP, extra disk, VMware Tools, snapshot
-- [ ] CA01 — built, static IP, VMware Tools, snapshot
-- [ ] FILSRV01 + CA01 joined to domain, domain login verified
+- [x] DC01 — static IP, VMware Tools, `g7future.local` domain
+- [x] OUs + one user per department + global groups
+- [x] Join a Windows client to the domain — CLIENT01, logged in as `ekonomi1`, verified via `whoami`
+- [x] FILSRV01 — built, static IP, extra disk, VMware Tools, snapshot
+- [x] CA01 — built, static IP, VMware Tools, snapshot
+- [x] FILSRV01 + CA01 joined to domain, domain login verified
 
 ### Sprint 2
 - [ ] CA01 — Enterprise Root CA, certificate templates, auto-enrollment
