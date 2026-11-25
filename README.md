@@ -7,6 +7,7 @@ A secured company network built from scratch in a virtual lab, as part of the *A
 ## Repo structure
 
 - [`docs/jira-tickets.md`](docs/jira-tickets.md) — full backlog as Jira-ready ticket text
+- [`docs/network-status-vlan1070.md`](docs/network-status-vlan1070.md) — current VLAN 1070 / FortiGate connectivity problem, evidence and open requests
 - `evidence/sprint1/`, `evidence/sprint2/`, `evidence/sprint3/` — screenshots and command output proving each requirement, organized by sprint
 - `scripts/` — PowerShell/config snippets used during the build
 
@@ -101,8 +102,8 @@ Reviews/retrospectives: 11, 18, 25 Nov.
 
 ### Sprint 1
 - [x] Create Jira board + backlog
-- [ ] Configure VLANs on switch + Fortigate interfaces
-- [ ] Fortigate firewall rules + client DHCP
+- [ ] Configure VLANs on switch + Fortigate interfaces — FortiGate interface is up, but frames from the VMs do not reach it; end-to-end **not verified**, see [network status](docs/network-status-vlan1070.md)
+- [ ] Fortigate firewall rules + client DHCP — blocked by the same issue
 - [x] DC01 — static IP, VMware Tools, `g7future.local` domain
 - [x] OUs + one user per department + global groups
 - [x] Join a Windows client to the domain — CLIENT01, logged in as `ekonomi1`, verified via `whoami`
@@ -132,6 +133,7 @@ Reviews/retrospectives: 11, 18, 25 Nov.
 ## Open questions
 
 - **DC02**: dropped. The teacher approved skipping DC02 for a two-person team, so the project has one domain controller. This must be confirmed again if the team becomes three.
+- **VLAN 1070 does not reach the FortiGate** (no gateway, no internet, no inbound RDP). Suspected to be on the path between hypervisor01 and the firewall; needs the instructor. Details and the list of requests: [network status](docs/network-status-vlan1070.md).
 - Third team member — to be confirmed.
 - UniFi access for WiFi AP configuration — to be requested from teacher.
 - Whether the 30GB/VM disk guidance applies if a Windows 11 client (needs more) is added.

@@ -10,9 +10,9 @@ Paste each section below as one Jira issue (title = heading, description = bulle
 
 ## 1. Network setup (VLANs + Fortigate)
 **Labels:** network
-- Create VLAN 1070 (servers, 10.7.10.0/24) on HP switch, tag on ports 12, 13, 25
-- Create VLAN 1071 (clients, 10.7.20.0/24) on HP switch, same ports
-- Create VLAN 1072 (WiFi, 10.7.30.0/24) on HP switch, same ports
+- Create VLAN 1070 (servers + clients, 10.7.1.0/24, Fortigate gateway 10.7.1.1) on HP switch, tag on ports 12, 13, 25
+- ~~Create VLAN 1071 (clients, 10.7.20.0/24)~~ — superseded: clients share VLAN 1070 / 10.7.1.0/24 for now
+- Create VLAN 1072 (WiFi, 10.7.30.0/24) on HP switch, same ports — Sprint 3, only when RADIUS/WiFi is built
 - Create matching interfaces in Fortigate (root firewall)
 - Configure DHCP for VLAN 1071 (and 1072 once RADIUS/WiFi is set up)
 - Verify VLAN tagging with a test VM on each segment
@@ -21,7 +21,7 @@ Paste each section below as one Jira issue (title = heading, description = bulle
 ## 2. DC01 — Domain Controller
 **Labels:** ad
 - Install Windows Server (template: 2019, ISO: 2022) on DC01
-- Assign static IP in 10.7.10.0/24
+- Assign static IP in 10.7.1.0/24 (DC01 = 10.7.1.2, gateway 10.7.1.1)
 - Promote to Domain Controller, create domain `g7future.local`
 - Install DNS role, verify resolution
 - **Evidence:** `dcdiag` output, screenshot of AD Users and Computers
