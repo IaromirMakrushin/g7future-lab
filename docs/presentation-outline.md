@@ -15,12 +15,12 @@
 - T4: DC01, DNS, dcdiag clean
 - T6: 5 department OUs/users/groups
 - T7: CLIENT01 domain-joined, login verified as `ekonomi1`
-- T11: FILSRV01 — 5 shares, IGDLA structure, Domain Users only
+- T11: FILSRV01 — 5 shares. Chain: user → `G_<avd>` → `DL_<avd>_RW` → share/NTFS (Domain Users has no permissions)
 - **Live demo #1:** `ekonomi1` writes to `\\FILSRV01\Ekonomi`, denied on `\\FILSRV01\IT`
 
 ## 4. Certificates & Secure Directory (3 min) — Iaromir
-- T9: CA01 → Enterprise Root CA, auto-enrollment templates + GPO, verified certs issued
-- T10: LDAPS on port 636, tested with ldp.exe, LDAP signing enforced
+- T9: CA01 → Enterprise Root CA verified (`certutil -ca.cert`). Templates created and permissioned, but auto-enrollment of our own templates is **not verified** — the GPO isn't linked in GPMC and DC01's certs come from built-in templates, not ours
+- T10: Port 636 + ldp.exe SSL bind succeeded, but tested locally on DC01, not from a client. LDAP signing set in Default Domain Policy; whether it's enforced on DC01 is **not verified** (Default Domain Controllers Policy may override with None) — check `LDAPServerIntegrity`
 
 ## 5. Hardening & Policy (3 min) — Elis
 - T12: password policy (12/14 chars), PSO for admins, lockout-until-admin-unlock by design
@@ -34,7 +34,7 @@
 
 ## 7. NTLM (2 min) — Elis
 - T19: audit-only mode, GPO `G7-T19-NTLM-Audit`
-- Findings: NTLM v2 by IP vs Kerberos by name (expected), **NTLMv1 observed from CA01** (flagged, not yet fixed)
+- Findings: NTLM v2 by IP vs Kerberos by name (expected), **anonymous NTLM session observed from CA01 at 17:14** (not NTLMv1 — flagged, not yet fixed)
 - Honest note: Deny not applied — time constraint, not an oversight
 
 ## 8. Dropped scope (1 min) — Both
@@ -42,10 +42,11 @@
 - T16-T18 (RADIUS/WiFi/EAP-TLS): design only, architecture shown but not built
 
 ## 9. Open issues & lessons learned (2 min) — Both
-- T2/T3 gateway/VLAN mismatch — still being debugged with the network admin
-- Clock drift on DC01 (8h, fixed 25 Nov) — explains odd timestamps in older evidence
-- NTLMv1 finding on CA01
-- What we'd do differently: catch the VLAN/IP plan mismatch earlier (lesson from the 10 Nov correction)
+- T2 fixed and verified 25 Nov 19:40 (stale ESXi active-port binding); T3 (firewall rules/DHCP) still not tested
+- T9/T10 corrected to "partly verified" after a second pass found the evidence didn't support "verified"
+- Clock drift on DC01 (8h, fixed 25 Nov) — explains odd timestamps in older evidence; CLIENT01 separately runs on Pacific time zone
+- Anonymous NTLM session finding on CA01
+- What we'd do differently: check actual ESXi port state, not just the configured setting; verify against a remote client, not localhost
 
 ## 10. Q&A
 
@@ -68,6 +69,5 @@
 14. Open issues + lessons learned + Q&A
 
 ## Still needed before tomorrow
-- [ ] Topology diagram (simple box diagram, can be done in PowerPoint/draw.io — want me to generate one as an artifact you can screenshot into slides?)
 - [ ] Elis's screenshots (Event Viewer, GPMC, CLIENT01 test) dropped into evidence/sprint2 + sprint3
 - [ ] Rehearsal — who presents which section out loud
